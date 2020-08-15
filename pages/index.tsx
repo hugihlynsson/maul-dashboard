@@ -2,6 +2,28 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { GetStaticProps, NextPage } from "next";
 
+const getStringHash = (str: string) =>
+  Array.from(str).reduce((s, c) => (Math.imul(26, s) + c.charCodeAt(0)) | 0, 0);
+
+const colors = {
+  magenta: "#EC008C",
+  blue: "#5D9CEC",
+  purple: "#AC92EC",
+  mintGreen: "#48CFAD",
+  grassGreen: "#A0D468",
+  orange: "#FFCE54",
+  grapeError: "#ED5565",
+};
+
+const hashColors = Object.keys(colors).map((color) => colors[color]);
+const getColorForName = (name: string): string => {
+  const hash = getStringHash(name);
+  const listIndex = Math.abs(hash % hashColors.length);
+  const color = hashColors[listIndex];
+  console.log("Generating hash for", name, ":", hash, listIndex, color);
+  return color;
+};
+
 type CompanyDayOrder = {
   username: string;
   restaurant: string;
@@ -59,15 +81,27 @@ const Home: NextPage<Props> = ({ week }) => {
               <p className={styles.dayDate}>
                 {new Date(date).getDate()}.{new Date(date).getMonth() + 1}
               </p>
+              {new Date(date).toDateString() === new Date().toDateString() && (
+                <p className={styles.dayToday}>Today</p>
+              )}
             </header>
 
             {orders.map((order) => (
               <div key={order.username} className={styles.order}>
-                <p className={styles.user}>{order.username.split(" ")[0]}</p>
+                <div
+                  className={styles.user}
+                  style={{ color: getColorForName(order.username) }}
+                >
+                  {order.username.split(" ")[0]}
+                  <div
+                    className={styles.userBackground}
+                    style={{ backgroundColor: getColorForName(order.username) }}
+                  />
+                </div>
                 <p className={styles.restaurant}>{order.restaurant}</p>
                 <p className={styles.dishName}>{order.dishName}</p>
                 <p className={styles.dishDescription}>
-                  {order.dishDescription}
+                  {order.dishDescription}.
                 </p>
               </div>
             ))}
