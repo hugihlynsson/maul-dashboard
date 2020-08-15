@@ -28,8 +28,10 @@ interface Props {
 const Home: NextPage<Props> = ({ week }) => <Week week={week} />;
 export default Home;
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => ({
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => ({
   props: {
-    week: await fetchWeek(new Date()),
+    week: await fetchWeek(new Date(context.params.date as string | undefined)),
   },
 });

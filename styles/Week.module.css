@@ -33,7 +33,7 @@
   flex-direction: row;
   margin-bottom: 12px;
   margin-left: 16px;
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .dayName {
@@ -99,8 +99,8 @@
 .dishName {
   font-size: 16px;
   font-weight: 600;
-  margin-top: 6px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 6px;
 }
 
 .dishDescription {
