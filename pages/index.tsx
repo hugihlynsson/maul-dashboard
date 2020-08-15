@@ -2,7 +2,85 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { GetStaticProps, NextPage } from "next";
 
+type CompanyDayOrder = {
+  username: string;
+  restaurant: string;
+  dishName: string;
+  dishDescription: string;
+};
+
 interface CompanyDayOrders {
+  date: string; // Date string
+  orders: Array<CompanyDayOrder>;
+}
+
+const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+interface Props {
+  // companyName: string;
+  week: [
+    CompanyDayOrders,
+    CompanyDayOrders,
+    CompanyDayOrders,
+    CompanyDayOrders,
+    CompanyDayOrders
+  ];
+}
+
+const Home: NextPage<Props> = ({ week }) => {
+  const fromDate = new Date(week[0].date);
+  const toDate = new Date(week[4].date);
+
+  return (
+    <main className={styles.main}>
+      <Head>
+        <title>Maul Avo Reykjavík</title>
+      </Head>
+
+      <header className={styles.header}>
+        <h1 className={styles.title}>Maul Avo Reykjavík</h1>
+        <p className={styles.subtitle}>
+          {fromDate.getDate()}
+          {fromDate.getMonth() !== toDate.getMonth() &&
+            `.${fromDate.getMonth() + 1}`}
+          {fromDate.getFullYear() !== toDate.getFullYear() &&
+            `.${fromDate.getFullYear()}`}{" "}
+          – {toDate.getDate()}.{toDate.getMonth() + 1}.{toDate.getFullYear()}
+        </p>
+      </header>
+
+      <div className={styles.week}>
+        {week.map(({ date, orders }) => (
+          <section className={styles.day} key={date}>
+            <header className={styles.dayHeader}>
+              <h1 className={styles.dayName}>
+                {weekDays[new Date(date).getDay() - 1]}
+              </h1>
+              <p className={styles.dayDate}>
+                {new Date(date).getDate()}.{new Date(date).getMonth() + 1}
+              </p>
+            </header>
+
+            {orders.map((order) => (
+              <div key={order.username} className={styles.order}>
+                <p className={styles.user}>{order.username.split(" ")[0]}</p>
+                <p className={styles.restaurant}>{order.restaurant}</p>
+                <p className={styles.dishName}>{order.dishName}</p>
+                <p className={styles.dishDescription}>
+                  {order.dishDescription}
+                </p>
+              </div>
+            ))}
+          </section>
+        ))}
+      </div>
+    </main>
+  );
+};
+
+export default Home;
+
+interface RawCompanyDayOrders {
   orders: Array<{
     menu_item_id: string;
     restaurant_id: string;
@@ -27,62 +105,18 @@ interface CompanyDayOrders {
   };
 }
 
-interface Props {
-  from: string; // Date string
-  to: string; // Date string
-  weekOrders: [
-    CompanyDayOrders,
-    CompanyDayOrders,
-    CompanyDayOrders,
-    CompanyDayOrders,
-    CompanyDayOrders
-  ];
-}
-
-const Home: NextPage<Props> = ({ from, to, weekOrders }) => {
-  console.log("Got orders", weekOrders);
-
-  return (
-    <main className={styles.main}>
-      <Head>
-        <title>Maul Avo Reykjavík</title>
-      </Head>
-
-      <h1 className={styles.title}>Maul Avo Reykjavík</h1>
-      <p className={styles.subtitle}>
-        {new Date(from).toLocaleDateString("de-DE")} –{" "}
-        {new Date(to).toLocaleDateString("de-DE")}
-      </p>
-
-      <div className={styles.week}>
-        {weekOrders.map((day, index) => (
-          <section className={styles.day} key={index}>
-            <h1 className={styles.dayName}>
-              {["Monday", "Thursday", "Wednesday", "Thursday", "Friday"][index]}
-            </h1>
-
-            {day.orders.map((order, index) => (
-              <div key={index} className={styles.order}>
-                <p className={styles.user}>{order.username}</p>
-                <p className={styles.restaurant}>
-                  {day.restaurants[order.restaurant_id].restaurant_name}
-                </p>
-                <p className={styles.dishName}>
-                  {day.menu_items[order.menu_item_id].short_description}
-                </p>
-                <p className={styles.dishDescription}>
-                  {day.menu_items[order.menu_item_id].description}
-                </p>
-              </div>
-            ))}
-          </section>
-        ))}
-      </div>
-    </main>
-  );
-};
-
-export default Home;
+const formatCompanyDayOrders = (
+  date: Date,
+  day: RawCompanyDayOrders
+): CompanyDayOrders => ({
+  date: date.toJSON(),
+  orders: day.orders.map((order) => ({
+    username: order.username,
+    restaurant: day.restaurants[order.restaurant_id].restaurant_name,
+    dishName: day.menu_items[order.menu_item_id].short_description,
+    dishDescription: day.menu_items[order.menu_item_id].description,
+  })),
+});
 
 const getOrdersForDay = async (date: Date): Promise<CompanyDayOrders> => {
   let year = date.getFullYear();
@@ -94,15 +128,12 @@ const getOrdersForDay = async (date: Date): Promise<CompanyDayOrders> => {
   );
 
   if (response.status === 404) {
-    return {
-      orders: [],
-      company: { id: "unknown", name: "Unknown" },
-      restaurants: {},
-      menu_items: {},
-    };
+    return { date: date.toJSON(), orders: [] };
   }
 
-  return response.json();
+  const rawCompanyDayOrders: RawCompanyDayOrders = await response.json();
+
+  return formatCompanyDayOrders(date, rawCompanyDayOrders);
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -127,9 +158,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
   return {
     props: {
-      from: monday.toJSON(),
-      to: week[4].toJSON(),
-      weekOrders: weekOrders as [
+      week: weekOrders as [
         CompanyDayOrders,
         CompanyDayOrders,
         CompanyDayOrders,

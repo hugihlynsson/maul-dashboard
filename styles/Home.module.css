@@ -2,27 +2,49 @@
   padding: 12px;
 }
 
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 24px;
+}
+
 .title {
   margin: 0;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 40px;
   margin-left: 16px;
+  margin-right: 12px;
 }
 
 .subtitle {
-  font-size: 16px;
-  margin-top: 8px;
+  font-size: 18px;
+  margin: 0;
+  color: #AAA;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.dayHeader {
+  display: flex;
+  flex-direction: row;
   margin-bottom: 24px;
-  color: #888;
   margin-left: 16px;
 }
 
 .dayName {
   font-size: 20px;
   font-weight: 600;
-  margin-left: 16px;
-  margin-top: 0;
-  margin-bottom: 8px;
+  margin: 0;
+  margin-right: 8px;
+}
+
+.dayDate {
+  font-size: 15px;
+  color: #AAA;
+  font-weight: 600;
+  margin: 0;
+  margin-top: 4px;
 }
 
 .order {
@@ -33,16 +55,16 @@
 }
 
 .user {
+  font-size: 13px;
+  font-weight: 600;
   margin-top: 0;
-  font-size: 16px;
+  margin-bottom: 6px;
 }
 
 .restaurant {
-  font-size: 10px;
-  color: #888;
-  text-transform: uppercase;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-size: 11px;
+  color: #666;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -54,13 +76,12 @@
 }
 
 .dishDescription {
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
-  color: #888;
+  color: #666;
 }
 
 @media (min-width: 600px) {
-
   .day {
     flex-basis: 20%;
     margin-right: 16px;
