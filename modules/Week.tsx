@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Week.module.css";
-import {StatelessComponent} from 'react';
-import Link from 'next/link'
+import { StatelessComponent } from "react";
+import Link from "next/link";
 
 const getStringHash = (str: string) =>
   Array.from(str).reduce((s, c) => (Math.imul(26, s) + c.charCodeAt(0)) | 0, 0);
@@ -34,6 +34,13 @@ interface CompanyDayOrders {
 
 const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+const formatDateForUrl = (date: Date): string =>
+  date.toLocaleString("se", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+
 interface Props {
   // companyName: string;
   week: [
@@ -48,6 +55,9 @@ interface Props {
 const Week: StatelessComponent<Props> = ({ week }) => {
   const fromDate = new Date(week[0].date);
   const toDate = new Date(week[4].date);
+  const weekInMilliseconds = 1000 * 60 * 60 * 24 * 7;
+  const inOneWeek = new Date(fromDate.getTime() + weekInMilliseconds);
+  const oneWeekAgo = new Date(fromDate.getTime() - weekInMilliseconds);
 
   return (
     <main className={styles.main}>
@@ -58,12 +68,18 @@ const Week: StatelessComponent<Props> = ({ week }) => {
       <header className={styles.header}>
         <h1 className={styles.title}>Maul Avo Reykjavík</h1>
         <p className={styles.subtitle}>
+          <Link href={`/${formatDateForUrl(oneWeekAgo)}`}>
+            <a className={styles.button}>&larr;</a>
+          </Link>{" "}
           {fromDate.getDate()}
           {fromDate.getMonth() !== toDate.getMonth() &&
             `.${fromDate.getMonth() + 1}`}
           {fromDate.getFullYear() !== toDate.getFullYear() &&
             `.${fromDate.getFullYear()}`}{" "}
-          – {toDate.getDate()}.{toDate.getMonth() + 1}.{toDate.getFullYear()}
+          – {toDate.getDate()}.{toDate.getMonth() + 1}.{toDate.getFullYear()}{" "}
+          <Link href={`/${formatDateForUrl(inOneWeek)}`}>
+            <a className={styles.button}>&rarr;</a>
+          </Link>
         </p>
       </header>
 
@@ -109,4 +125,3 @@ const Week: StatelessComponent<Props> = ({ week }) => {
 };
 
 export default Week;
-

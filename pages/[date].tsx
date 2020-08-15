@@ -32,6 +32,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => ({
   props: {
-    week: await fetchWeek(new Date(context.params.date as string | undefined)),
+    week: await fetchWeek(new Date(context.params.date as string)),
   },
 });
