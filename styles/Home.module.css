@@ -1,9 +1,72 @@
 .main {
-  padding: 24px;
+  padding: 12px;
 }
 
 .title {
   margin: 0;
   font-size: 24px;
   font-weight: 600;
+  margin-left: 16px;
+}
+
+.subtitle {
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  color: #888;
+  margin-left: 16px;
+}
+
+.dayName {
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 16px;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.order {
+  border-radius: 12px;
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.user {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.restaurant {
+  font-size: 10px;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.dishName {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.dishDescription {
+  font-size: 14px;
+  margin: 0;
+  color: #888;
+}
+
+@media (min-width: 600px) {
+
+  .day {
+    flex-basis: 20%;
+    margin-right: 16px;
+  }
+  .week {
+    display: flex;
+    flex-direction: row;
+  }
 }
