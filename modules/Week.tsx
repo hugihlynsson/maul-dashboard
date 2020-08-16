@@ -42,7 +42,10 @@ const formatDateForUrl = (date: Date): string =>
   });
 
 interface Props {
-  // companyName: string;
+  company: {
+    name: string;
+    id: string;
+  };
   week: [
     CompanyDayOrders,
     CompanyDayOrders,
@@ -52,7 +55,7 @@ interface Props {
   ];
 }
 
-const Week: StatelessComponent<Props> = ({ week }) => {
+const Week: StatelessComponent<Props> = ({ company, week }) => {
   const fromDate = new Date(week[0].date);
   const toDate = new Date(week[4].date);
   const weekInMilliseconds = 1000 * 60 * 60 * 24 * 7;
@@ -62,13 +65,17 @@ const Week: StatelessComponent<Props> = ({ week }) => {
   return (
     <main className={styles.main}>
       <Head>
-        <title>Maul Avo Reykjavík</title>
+        <title>Maul</title>
       </Head>
 
       <header className={styles.header}>
-        <h1 className={styles.title}>Maul Avo Reykjavík</h1>
+        <Link href="/">
+          <a>
+            <h1 className={styles.title}>Maul</h1>
+          </a>
+        </Link>
         <p className={styles.subtitle}>
-          <Link href={`/${formatDateForUrl(oneWeekAgo)}`}>
+          <Link href={`/${company.id}/${formatDateForUrl(oneWeekAgo)}`}>
             <a className={styles.button}>&larr;</a>
           </Link>{" "}
           {fromDate.getDate()}
@@ -77,7 +84,7 @@ const Week: StatelessComponent<Props> = ({ week }) => {
           {fromDate.getFullYear() !== toDate.getFullYear() &&
             `.${fromDate.getFullYear()}`}{" "}
           – {toDate.getDate()}.{toDate.getMonth() + 1}.{toDate.getFullYear()}{" "}
-          <Link href={`/${formatDateForUrl(inOneWeek)}`}>
+          <Link href={`/${company.id}/${formatDateForUrl(inOneWeek)}`}>
             <a className={styles.button}>&rarr;</a>
           </Link>
         </p>

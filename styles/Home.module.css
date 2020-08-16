@@ -1,0 +1,35 @@
+.main {
+  padding: 12px;
+}
+
+.header {
+  /* display: flex; */
+  /* flex-direction: column; */
+  margin-left: 16px;
+}
+
+.companies {
+  /* display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr) );
+  grid-gap: 24px;
+}
+
+.company {
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  height: 180px;
+  transition: all 0.2s;
+}
+.company:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.companyName {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}

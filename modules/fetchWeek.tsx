@@ -1,4 +1,3 @@
-
 type CompanyDayOrder = {
   username: string;
   restaurant: string;
@@ -10,7 +9,6 @@ interface CompanyDayOrders {
   date: string; // Date string
   orders: Array<CompanyDayOrder>;
 }
-
 
 interface Props {
   // companyName: string;
@@ -61,13 +59,16 @@ const formatCompanyDayOrders = (
   })),
 });
 
-const getOrdersForDay = async (date: Date): Promise<CompanyDayOrders> => {
+const getOrdersForDay = async (
+  companyId: string,
+  date: Date
+): Promise<CompanyDayOrders> => {
   let year = date.getFullYear();
   let month = (date.getMonth() + 1).toString().padStart(2, "0");
   let day = date.getDate().toString().padStart(2, "0");
 
   let response = await fetch(
-    `https://dev-api.maul.is/companies/avo/orders/${year}-${month}-${day}`
+    `https://dev-api.maul.is/companies/${companyId}/orders/${year}-${month}-${day}`
   );
 
   if (response.status === 404) {
@@ -79,7 +80,7 @@ const getOrdersForDay = async (date: Date): Promise<CompanyDayOrders> => {
   return formatCompanyDayOrders(date, rawCompanyDayOrders);
 };
 
-export default async (date: Date) => {
+export default async (companyId: string, date: Date) => {
   const dayInMilliSeconds = 1000 * 60 * 60 * 24;
   const dateDay = date.getDay();
   const mondayOffsetFromToday = dateDay === 6 ? 2 : -dateDay + 1;
@@ -95,13 +96,18 @@ export default async (date: Date) => {
     new Date(monday.getTime() + dayInMilliSeconds * 4),
   ] as const;
 
-  const weekOrders = await Promise.all(week.map((day) => getOrdersForDay(day)));
+  const weekOrders = await Promise.all(
+    week.map((day) => getOrdersForDay(companyId, day))
+  );
 
-  return  weekOrders as [
-        CompanyDayOrders,
-        CompanyDayOrders,
-        CompanyDayOrders,
-        CompanyDayOrders,
-        CompanyDayOrders
-      ];
+  return {
+    company: { name: companyId, id: companyId },
+    week: weekOrders as [
+      CompanyDayOrders,
+      CompanyDayOrders,
+      CompanyDayOrders,
+      CompanyDayOrders,
+      CompanyDayOrders
+    ],
+  };
 };

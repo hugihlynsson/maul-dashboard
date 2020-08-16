@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
-import fetchWeek from "../modules/fetchWeek";
-import Week from "../modules/Week";
+import fetchWeek from "../../modules/fetchWeek";
+import Week from "../../modules/Week";
 
 type CompanyDayOrder = {
   username: string;
@@ -15,7 +15,10 @@ interface CompanyDayOrders {
 }
 
 interface Props {
-  // companyName: string;
+  company: {
+    name: string;
+    id: string;
+  };
   week: [
     CompanyDayOrders,
     CompanyDayOrders,
@@ -25,13 +28,13 @@ interface Props {
   ];
 }
 
-const Home: NextPage<Props> = ({ week }) => <Week week={week} />;
-export default Home;
+const Company: NextPage<Props> = ({ company, week }) => (
+  <Week company={company} week={week} />
+);
+export default Company;
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => ({
-  props: {
-    week: await fetchWeek(new Date(context.params.date as string)),
-  },
+  props: await fetchWeek(context.params.companyId as string, new Date()),
 });
