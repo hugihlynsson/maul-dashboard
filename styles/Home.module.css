@@ -2,22 +2,33 @@
   padding: 12px;
 }
 
-.header {
-  /* display: flex; */
-  /* flex-direction: column; */
+.title {
+  margin-top: 32px;
+  margin-bottom: 0;
+  font-size: 32px;
+  font-weight: 700;
+  margin-left: 16px;
+}
+
+.subtitle {
+  margin-top: 0;
+  font-size: 18px;
+  color: #aaa;
+  font-weight: 400;
+  margin-bottom: 32px;
   margin-left: 16px;
 }
 
 .companies {
-  /* display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr) );
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   grid-gap: 24px;
 }
 
 .company {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -32,4 +43,12 @@
   font-size: 20px;
   font-weight: 600;
   margin: 0;
+}
+
+.companyDomain {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  margin-top: 4px;
+  color: #aaa;
 }

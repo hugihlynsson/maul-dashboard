@@ -16,18 +16,20 @@ const Home: NextPage<Props> = ({ companies }) => {
   return (
     <main className={styles.main}>
       <Head>
-        <title>Maul Companies</title>
+        <title>Maul Weekly Dashboard</title>
       </Head>
 
-      <h1 className={styles.title}>Maul Companies</h1>
+      <h1 className={styles.title}>Maul Weekly Dashboard</h1>
+      <p className={styles.subtitle}>Select your company to get started &darr;</p>
 
       <div className={styles.companies}>
         {companies
           .filter(({ Active }) => Active)
           .map(({ CompanyId, Name, Domain }) => (
-            <Link href={`/${CompanyId}`}>
-              <a className={styles.company} key={CompanyId}>
+            <Link key={CompanyId} href={`/${CompanyId}`}>
+              <a className={styles.company}>
                 <p className={styles.companyName}>{Name}</p>
+                <p className={styles.companyDomain}>{Domain}</p>
               </a>
             </Link>
           ))}
