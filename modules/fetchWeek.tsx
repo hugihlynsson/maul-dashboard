@@ -29,7 +29,7 @@ interface RawCompanyDayOrders {
   }>;
   company: {
     id: string;
-    name: string;
+    company_name: string;
   };
   restaurants: {
     [restaurant_id: string]: {
@@ -59,10 +59,7 @@ const formatCompanyDayOrders = (
   })),
 });
 
-const getOrdersForDay = async (
-  companyId: string,
-  date: Date
-): Promise<CompanyDayOrders> => {
+const getOrdersForDay = async (companyId: string, date: Date) => {
   let year = date.getFullYear();
   let month = (date.getMonth() + 1).toString().padStart(2, "0");
   let day = date.getDate().toString().padStart(2, "0");
@@ -72,15 +69,35 @@ const getOrdersForDay = async (
   );
 
   if (response.status === 404) {
-    return { date: date.toJSON(), orders: [] };
+    return { day: { date: date.toJSON(), orders: [] } };
   }
 
   const rawCompanyDayOrders: RawCompanyDayOrders = await response.json();
 
-  return formatCompanyDayOrders(date, rawCompanyDayOrders);
+  return {
+    day: formatCompanyDayOrders(date, rawCompanyDayOrders),
+    company: {
+      id: rawCompanyDayOrders.company.id,
+      name: rawCompanyDayOrders.company.company_name,
+    },
+  };
 };
 
-export default async (companyId: string, date: Date) => {
+interface WeekOrders {
+  company: {
+    id: string;
+    name: string;
+  };
+  week: [
+    CompanyDayOrders,
+    CompanyDayOrders,
+    CompanyDayOrders,
+    CompanyDayOrders,
+    CompanyDayOrders
+  ];
+}
+
+export default async (companyId: string, date: Date): Promise<WeekOrders> => {
   const dayInMilliSeconds = 1000 * 60 * 60 * 24;
   const dateDay = date.getDay();
   const mondayOffsetFromToday = dateDay === 6 ? 2 : -dateDay + 1;
@@ -101,8 +118,11 @@ export default async (companyId: string, date: Date) => {
   );
 
   return {
-    company: { name: companyId, id: companyId },
-    week: weekOrders as [
+    company: weekOrders.find(({ company }) => company)?.company ?? {
+      id: companyId,
+      name: companyId,
+    },
+    week: weekOrders.map(({ day }) => day) as [
       CompanyDayOrders,
       CompanyDayOrders,
       CompanyDayOrders,

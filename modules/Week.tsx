@@ -65,13 +65,13 @@ const Week: StatelessComponent<Props> = ({ company, week }) => {
   return (
     <main className={styles.main}>
       <Head>
-        <title>Maul</title>
+        <title>{company.name} – Maul Weekly Dashboard </title>
       </Head>
 
       <header className={styles.header}>
         <Link href="/">
           <a>
-            <h1 className={styles.title}>Maul</h1>
+            <h1 className={styles.title}>Maul at {company.name}</h1>
           </a>
         </Link>
         <p className={styles.subtitle}>
