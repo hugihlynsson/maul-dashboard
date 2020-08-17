@@ -68,7 +68,8 @@ const getOrdersForDay = async (companyId: string, date: Date) => {
     `https://dev-api.maul.is/companies/${companyId}/orders/${year}-${month}-${day}`
   );
 
-  if (response.status === 404) {
+  if (response.status !== 200) {
+    // Todo: Is failing silently good enough or should there be some proper error handling?
     return { day: { date: date.toJSON(), orders: [] } };
   }
 
