@@ -697,10 +697,10 @@ evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
     md5.js "^1.3.4"
     safe-buffer "^5.1.1"
 
-fathom-client@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/fathom-client/-/fathom-client-3.0.0.tgz#409c047cf1e2fea45b148e28d50fcd635e992893"
-  integrity sha512-d0oH2SHWCMIVLbbegB7nBIjSvbqbHrZBZxIOWSVAxlJL/roL0Ah9NNb6rTIcKMlA4gov9AjWQGEcZRzlnGc3XQ==
+fathom-client@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/fathom-client/-/fathom-client-3.3.1.tgz#af90151f40304456c4e29de303fd77afc371a919"
+  integrity sha512-eDRVKZ6JTs/IY7cRAYhj7tfnQTKk8HIFBxdlyzbg9m5Pmz6lNLJ7BfSfA1i2LEMbOx2yHUudu0ux4sOiWz1O0A==
 
 fill-range@^7.0.1:
   version "7.0.1"

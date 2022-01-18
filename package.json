@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "fathom-client": "^3.0.0",
+    "fathom-client": "^3.3.1",
     "next": "10.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
